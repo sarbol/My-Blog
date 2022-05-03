@@ -1,0 +1,5182 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>QUICK GUIDE ON WEB SCRAPING FROM PARSING STATIC WEB PAGE TO ACCESSING BROWSER REQUESTS | fastpages</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="QUICK GUIDE ON WEB SCRAPING FROM PARSING STATIC WEB PAGE TO ACCESSING BROWSER REQUESTS" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Navigating Web pages, Parsing HTML elements and intercepting XHR objects." />
+<meta property="og:description" content="Navigating Web pages, Parsing HTML elements and intercepting XHR objects." />
+<link rel="canonical" href="https://sarbol.github.io/My-Blog/jupyter/selenium/request-html/web%20scraping/2022/05/02/_04_30_Web_Crawling_Tutorial.html" />
+<meta property="og:url" content="https://sarbol.github.io/My-Blog/jupyter/selenium/request-html/web%20scraping/2022/05/02/_04_30_Web_Crawling_Tutorial.html" />
+<meta property="og:site_name" content="fastpages" />
+<meta property="og:image" content="https://sarbol.github.io/My-Blog/images/chart-preview.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-05-02T00:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://sarbol.github.io/My-Blog/images/chart-preview.png" />
+<meta property="twitter:title" content="QUICK GUIDE ON WEB SCRAPING FROM PARSING STATIC WEB PAGE TO ACCESSING BROWSER REQUESTS" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-05-02T00:00:00-05:00","datePublished":"2022-05-02T00:00:00-05:00","description":"Navigating Web pages, Parsing HTML elements and intercepting XHR objects.","headline":"QUICK GUIDE ON WEB SCRAPING FROM PARSING STATIC WEB PAGE TO ACCESSING BROWSER REQUESTS","image":"https://sarbol.github.io/My-Blog/images/chart-preview.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://sarbol.github.io/My-Blog/jupyter/selenium/request-html/web%20scraping/2022/05/02/_04_30_Web_Crawling_Tutorial.html"},"url":"https://sarbol.github.io/My-Blog/jupyter/selenium/request-html/web%20scraping/2022/05/02/_04_30_Web_Crawling_Tutorial.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/My-Blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://sarbol.github.io/My-Blog/feed.xml" title="fastpages" /><link rel="shortcut icon" type="image/x-icon" href="/My-Blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/My-Blog/">fastpages</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/My-Blog/about/">About Me</a><a class="page-link" href="/My-Blog/search/">Search</a><a class="page-link" href="/My-Blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">QUICK GUIDE ON WEB SCRAPING FROM PARSING STATIC WEB PAGE TO ACCESSING BROWSER REQUESTS</h1><p class="page-description">Navigating Web pages, Parsing HTML elements and intercepting XHR objects.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-05-02T00:00:00-05:00" itemprop="datePublished">
+        May 2, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      20 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/My-Blog/categories/#jupyter">jupyter</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/My-Blog/categories/#Selenium">Selenium</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/My-Blog/categories/#Request-html">Request-html</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/My-Blog/categories/#Web Scraping">Web Scraping</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-justify-center">
+          <div class="px-2">
+
+    <a href="https://github.com/sarbol/My-Blog/tree/master/_notebooks/2022_04_30_Web_Crawling_Tutorial.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/My-Blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/sarbol/My-Blog/master?filepath=_notebooks%2F2022_04_30_Web_Crawling_Tutorial.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/My-Blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/sarbol/My-Blog/blob/master/_notebooks/2022_04_30_Web_Crawling_Tutorial.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/My-Blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+          <div class="px-2">
+  <a href="https://deepnote.com/launch?url=https%3A%2F%2Fgithub.com%2Fsarbol%2FMy-Blog%2Fblob%2Fmaster%2F_notebooks%2F2022_04_30_Web_Crawling_Tutorial.ipynb" target="_blank">
+      <img class="notebook-badge-image" src="/My-Blog/assets/badges/deepnote.svg" alt="Launch in Deepnote"/>
+  </a>
+</div>
+
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul id="toc" class="section-nav">
+<li class="toc-entry toc-h1"><a href="#INTRODUCTION">INTRODUCTION </a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#Installation-of-Required-Dependencies">Installation of Required Dependencies </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#PARSING-STATIC-WEBSITE">PARSING STATIC WEBSITE </a></li>
+<li class="toc-entry toc-h1"><a href="#PARSING-A-DYNAMIC-WEBSITE">PARSING A DYNAMIC WEBSITE </a></li>
+<li class="toc-entry toc-h1"><a href="#GETTING-DATA-FROM-XHR-OBJECT">GETTING DATA FROM XHR OBJECT </a></li>
+<li class="toc-entry toc-h1"><a href="#References">References </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2022_04_30_Web_Crawling_Tutorial.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="INTRODUCTION">
+<a class="anchor" href="#INTRODUCTION" aria-hidden="true"><span class="octicon octicon-link"></span></a>INTRODUCTION<a class="anchor-link" href="#INTRODUCTION"> </a>
+</h1>
+<p>One of Data Scientist tasks apart from building models is to source for data. Web scraping is one of the ways to get relevant data to improve the performance of ones model. This Blog post would show you how to parse html elements to retrieve information of interest from static and dynamic website using Selenium and Request-html Python libraries. It also contain details on how to extract data from XHR object over the browser network.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Installation-of-Required-Dependencies">
+<a class="anchor" href="#Installation-of-Required-Dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation of Required Dependencies<a class="anchor-link" href="#Installation-of-Required-Dependencies"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">requests</span><span class="o">-</span><span class="n">html</span> <span class="o">&amp;&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">selenium</span> <span class="o">&amp;&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">selenium</span><span class="o">-</span><span class="n">wire</span> <span class="o">&amp;&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="err">!</span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span> <span class="c1"># to update ubuntu to correctly run apt install</span>
+<span class="err">!</span><span class="n">apt</span> <span class="n">install</span> <span class="n">chromium</span><span class="o">-</span><span class="n">chromedriver</span> <span class="o">&amp;&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+<span class="err">!</span><span class="n">cp</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">chromium</span><span class="o">-</span><span class="n">browser</span><span class="o">/</span><span class="n">chromedriver</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>cp: '/usr/lib/chromium-browser/chromedriver' and '/usr/bin/chromedriver' are the same file
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">'/usr/lib/chromium-browser/chromedriver'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="kn">from</span> <span class="nn">seleniumwire</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.chrome.options</span> <span class="kn">import</span> <span class="n">Options</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="kn">import</span> <span class="n">WebDriverWait</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="kn">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.desired_capabilities</span> <span class="kn">import</span> <span class="n">DesiredCapabilities</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">requests_html</span> <span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">HTMLSession</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/usr/local/lib/python3.7/dist-packages/trio/_core/_multierror.py:464: RuntimeWarning: IPython detected, but you already have a custom exception handler installed. I'll skip installing Trio's custom handler, but this means MultiErrors will not show full tracebacks.
+  category=RuntimeWarning,
+/usr/local/lib/python3.7/dist-packages/requests/__init__.py:91: RequestsDependencyWarning: urllib3 (1.26.9) or chardet (3.0.4) doesn't match a supported version!
+  RequestsDependencyWarning)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="PARSING-STATIC-WEBSITE">
+<a class="anchor" href="#PARSING-STATIC-WEBSITE" aria-hidden="true"><span class="octicon octicon-link"></span></a>PARSING STATIC WEBSITE<a class="anchor-link" href="#PARSING-STATIC-WEBSITE"> </a>
+</h1>
+<p>A simple request to a website returns a HTML file which can be turned to an HTML object.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://ng.investing.com/equities/nigeria'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Content of a typical get request to a webpage: </span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">"Content-Type"</span><span class="p">]</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="c1">#convert to HTML Object for easy Parsing</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">HTML</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">HTML OBJECT: '</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Content of a typical get request to a webpage: text/html; charset=UTF-8
+
+HTML OBJECT:  &lt;HTML url='https://example.org/'&gt;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's extract the data in the table on this <a href="https://ng.investing.com/equities/nigeria">website</a></p>
+<p>To do this task a basic understanding of HTML element is required. You'll need to utilize Chrome dev tool to inspect the webpage. Place your cursor on the body of the table and then right-click on your mouse. On the menu, click inspect. Chrome dev tool would display on the screen, locate the HTML tag <code>&lt;table&gt; id = "cross_rate_markets_stocks_1"....&lt;/table&gt;</code></p>
+<p>See accompanying image</p>
+<p><img src="https://drive.google.com/uc?export=view&amp;id=1U9DNn_NCBY-NEduDO3rvPvky2SMzcEwx" alt=""></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Our data of interest is within the table element. Under the table element are child elements such as <code>&lt;thead&gt; and &lt;tbody&gt;</code>. We are going to utilize the <code>html.find()</code> method to select the html tag bearing the information we need. This method requires the name of the element as argument. To locate the specific element of interest we can either use <a href="https://www.w3schools.com/cssref/css_selectors.asp">CSS Selectors</a> or by <a href="https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256086(v=vs.100">XPath</a>?redirectedfrom=MSDN)</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'#cross_rate_markets_stocks_1'</span><span class="p">,</span> <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#Extract header and body elements from table</span>
+<span class="c1">#first = True: ensures an element is returned instead of a list of the element </span>
+<span class="n">header</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'thead'</span><span class="p">,</span> <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">body</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'tbody'</span><span class="p">,</span> <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">column_names</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'tr th'</span><span class="p">)</span>
+<span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">column_names</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>['', 'Name', 'Last', 'High', 'Low', 'Chg.', 'Chg. %', 'Vol.', 'Time', '']
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">column_names</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">column_names</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>''</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'tr'</span><span class="p">)</span>
+<span class="n">rows</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&lt;Element 'tr' id='pair_101668'&gt;,
+ &lt;Element 'tr' id='pair_101672'&gt;,
+ &lt;Element 'tr' id='pair_101674'&gt;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To visualize the structure of one of the rows. let's import Beautifulsoup to use its pretty print method.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">beautifulsoup4</span> <span class="o">&amp;&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Output" data-close="Show Output"></summary>
+        <p>
+</p>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;tr id="pair_101668"&gt;
+ &lt;td class="flag"&gt;
+  &lt;span class="ceFlags Nigeria" title="Nigeria"&gt;
+  &lt;/span&gt;
+ &lt;/td&gt;
+ &lt;td class="bold left noWrap elp plusIconTd"&gt;
+  &lt;a href="/equities/custodying" title="Custodian and Allied PLC"&gt;
+   Custodian Allied
+  &lt;/a&gt;
+  &lt;span class="alertBellGrayPlus js-plus-icon genToolTip oneliner" data-id="101668" data-name="Custodian and Allied PLC" data-tooltip="Create Alert" data-volume="2,162,393"&gt;
+  &lt;/span&gt;
+ &lt;/td&gt;
+ &lt;td class="pid-101668-last"&gt;
+  6.95
+ &lt;/td&gt;
+ &lt;td class="pid-101668-high"&gt;
+  6.95
+ &lt;/td&gt;
+ &lt;td class="pid-101668-low"&gt;
+  6.95
+ &lt;/td&gt;
+ &lt;td class="bold redFont pid-101668-pc"&gt;
+  0.00
+ &lt;/td&gt;
+ &lt;td class="bold redFont pid-101668-pcp"&gt;
+  0.00%
+ &lt;/td&gt;
+ &lt;td class=" pid-101668-turnover"&gt;
+  0
+ &lt;/td&gt;
+ &lt;td class=" pid-101668-time" data-value="1651238340"&gt;
+  29/04
+ &lt;/td&gt;
+ &lt;td class="icon"&gt;
+  &lt;span class="redClockIcon isOpenExch-96"&gt;
+  &lt;/span&gt;
+ &lt;/td&gt;
+&lt;/tr&gt;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We are interested in the text within each <code>&lt;td&gt;</code> element except the first and last elements. However, the second element has an anchor tag <code>&lt;a&gt;</code> which bears the name of the equity and the penultimate element stores the unix timestamp at the "data-value" attribute. Let's write a function that extracts the required text while taking these constraints into consideration.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="k">def</span> <span class="nf">extract_text</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+  <span class="n">td</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'td'</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#extracts all td element except the first and the last</span>
+  <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+  <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">td</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+      <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'data-value'</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, we extract all the rquired data from the body of the table by mapping the <em>iterable</em> <code>rows</code> to the function object <code>extract_text</code> defined above. Subsequently, we convert it to a pandas dataframe.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">extract_text</span><span class="p">,</span> <span class="n">rows</span><span class="p">))</span>
+
+<span class="n">data</span><span class="p">[:</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Output" data-close="Show Output"></summary>
+        <p>
+</p>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[['Custodian Allied',
+  '6.95',
+  '6.95',
+  '6.95',
+  '0.00',
+  '0.00%',
+  '0',
+  '1651238340'],
+ ['Dangote Cement',
+  '285.00',
+  '292.40',
+  '292.40',
+  '+0.00',
+  '+0.00%',
+  '0',
+  '1651239000'],
+ ['Dangote Sugar',
+  '16.20',
+  '16.50',
+  '16.05',
+  '0.00',
+  '0.00%',
+  '0',
+  '1651239000']]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">column_names</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'Name'</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+  <div id="df-3f3477ba-4546-4e5b-afd8-e1816152fd18">
+    <div class="colab-df-container">
+      <div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Last</th>
+      <th>High</th>
+      <th>Low</th>
+      <th>Chg.</th>
+      <th>Chg. %</th>
+      <th>Vol.</th>
+      <th>Time</th>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Custodian Allied</th>
+      <td>6.95</td>
+      <td>6.95</td>
+      <td>6.95</td>
+      <td>0.00</td>
+      <td>0.00%</td>
+      <td>0</td>
+      <td>1651238340</td>
+    </tr>
+    <tr>
+      <th>Dangote Cement</th>
+      <td>285.00</td>
+      <td>292.40</td>
+      <td>292.40</td>
+      <td>+0.00</td>
+      <td>+0.00%</td>
+      <td>0</td>
+      <td>1651239000</td>
+    </tr>
+    <tr>
+      <th>Dangote Sugar</th>
+      <td>16.20</td>
+      <td>16.50</td>
+      <td>16.05</td>
+      <td>0.00</td>
+      <td>0.00%</td>
+      <td>0</td>
+      <td>1651239000</td>
+    </tr>
+    <tr>
+      <th>ETI</th>
+      <td>12.00</td>
+      <td>12.00</td>
+      <td>12.00</td>
+      <td>0.00</td>
+      <td>0.00%</td>
+      <td>0</td>
+      <td>1651235820</td>
+    </tr>
+    <tr>
+      <th>FBN Holdings</th>
+      <td>11.95</td>
+      <td>12.00</td>
+      <td>11.85</td>
+      <td>+0.00</td>
+      <td>+0.00%</td>
+      <td>0</td>
+      <td>1651239000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-3f3477ba-4546-4e5b-afd8-e1816152fd18')" title="Convert this dataframe to an interactive table." style="display:none;">
+        
+  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px"&gt;
+    <path d="M0 0h24v24H0V0z" fill="none"></path>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"></path><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"></path>
+  &lt;/svg&gt;
+      </button>
+      
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-3f3477ba-4546-4e5b-afd8-e1816152fd18 button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-3f3477ba-4546-4e5b-afd8-e1816152fd18');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+  
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+  <div id="df-a9114cc8-ba97-4ac9-845d-41c7d873d7ca">
+    <div class="colab-df-container">
+      <div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Last</th>
+      <th>High</th>
+      <th>Low</th>
+      <th>Chg.</th>
+      <th>Chg. %</th>
+      <th>Vol.</th>
+      <th>Time</th>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Custodian Allied</th>
+      <td>6.95</td>
+      <td>6.95</td>
+      <td>6.95</td>
+      <td>0.00</td>
+      <td>0.00%</td>
+      <td>0</td>
+      <td>2022-04-29</td>
+    </tr>
+    <tr>
+      <th>Dangote Cement</th>
+      <td>285.00</td>
+      <td>292.40</td>
+      <td>292.40</td>
+      <td>+0.00</td>
+      <td>+0.00%</td>
+      <td>0</td>
+      <td>2022-04-29</td>
+    </tr>
+    <tr>
+      <th>Dangote Sugar</th>
+      <td>16.20</td>
+      <td>16.50</td>
+      <td>16.05</td>
+      <td>0.00</td>
+      <td>0.00%</td>
+      <td>0</td>
+      <td>2022-04-29</td>
+    </tr>
+    <tr>
+      <th>ETI</th>
+      <td>12.00</td>
+      <td>12.00</td>
+      <td>12.00</td>
+      <td>0.00</td>
+      <td>0.00%</td>
+      <td>0</td>
+      <td>2022-04-29</td>
+    </tr>
+    <tr>
+      <th>FBN Holdings</th>
+      <td>11.95</td>
+      <td>12.00</td>
+      <td>11.85</td>
+      <td>+0.00</td>
+      <td>+0.00%</td>
+      <td>0</td>
+      <td>2022-04-29</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-a9114cc8-ba97-4ac9-845d-41c7d873d7ca')" title="Convert this dataframe to an interactive table." style="display:none;">
+        
+  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px"&gt;
+    <path d="M0 0h24v24H0V0z" fill="none"></path>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"></path><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"></path>
+  &lt;/svg&gt;
+      </button>
+      
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-a9114cc8-ba97-4ac9-845d-41c7d873d7ca button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-a9114cc8-ba97-4ac9-845d-41c7d873d7ca');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+  
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="PARSING-A-DYNAMIC-WEBSITE">
+<a class="anchor" href="#PARSING-A-DYNAMIC-WEBSITE" aria-hidden="true"><span class="octicon octicon-link"></span></a>PARSING A DYNAMIC WEBSITE<a class="anchor-link" href="#PARSING-A-DYNAMIC-WEBSITE"> </a>
+</h1>
+<p><a href="https://ng.investing.com/equities/nigeria">ng.investing.com</a> is a dynamically rendered site. This means certain information/data are not loaded on initial page load until the user interacts with certain elements on the web page. The content of the site is controlled by javascript on the client side.Our initial <code>requests.get()</code> method would only provide us html content of initial page load. Meanwhile, we might be interested in some information that is only accessible after certain clicks on the web page.<br>
+While the earlier packages (requests, Request-html, Beautifulsoup) are quite effective in retrieving information on Static webpages, they are limited to this kind of website design. To scrape data from a Dynamic webpage, there is a need for a web crawler that can interacts with html elements just like a regular User would. Selenium is a python package specifically built for automatic website testing. This package allow Quality Assuarance professionals to simulate User behaviour to evaluate the performance of a website and to identify any inefficiencies. Selenium's capabilities can be exploited to extract data concealed by Javascript.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The default table on the landing page of this url <a href="https://ng.investing.com/equities/nigeria">ng.investing.com </a> is the NSE 30 which contains the equity price of top 30 companies listed on Nigeria Stock Exchange. Let's say we are interested in all the stocks listed on the Exchange. To have the web page display this information, we need to toggle on the dropdown to select the right option. To perform this task, we need Selenium.<br>
+<br>
+Checkout this <a href="https://stackoverflow.com/questions/51046454/how-can-we-use-selenium-webdriver-in-colab-research-google-com">page</a> on how to use Selenium webdriver on Colab (Chrome instance) or this <a href="https://colab.research.google.com/github/restrepo/ComputationalMethods/blob/master/tools/selenium.ipynb">notebook</a> for firefox gecko. But, you have all you need to replicate this on your project. To run selenium on your local Jupyter notebook. <code>pip install selenium</code> or better still <code>pip install selenium-wire</code> for extra bindings which would be discussed later in this notebook. Download a Chrome driver same as the version of your Chrome Browser. Ensure the executable file is in the same directory as your notebook.
+<br>
+<br>
+Let's start by defining the parameters for the Chrome webdriver. 
+The first step is to instantiate driver object. To load the webpage of interest, the url is passed as argument to the <code>driver.get()</code> method. To load all the available stock prices on the webpage, the find_element method of the driver is called to loacate this element <code>&lt;option id="all"&gt;Nigeria all stocks&lt;/option&gt;</code>. This element is located by <code>id</code>. After clicking on the element, the program is slept for 3 seconds to enable the query to load. The html file is saved as <code>page</code> by calling the <code>driver.page_source</code> attribute.<br></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">capabilities</span> <span class="o">=</span> <span class="n">DesiredCapabilities</span><span class="o">.</span><span class="n">CHROME</span>
+<span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">ChromeOptions</span><span class="p">()</span>
+<span class="n">options</span><span class="o">.</span><span class="n">add_experimental_option</span><span class="p">(</span><span class="s1">'excludeSwitches'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'enable-logging'</span><span class="p">])</span>
+<span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">ChromeOptions</span><span class="p">()</span>
+<span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'--headless'</span><span class="p">)</span>
+<span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'--no-sandbox'</span><span class="p">)</span>
+<span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'--disable-dev-shm-usage'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="s1">'chromedriver'</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">options</span><span class="p">,</span> <span class="n">desired_capabilities</span> <span class="o">=</span> <span class="n">capabilities</span><span class="p">)</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://ng.investing.com/equities/nigeria'</span><span class="p">)</span>
+
+
+<span class="n">all_stocks</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">'all'</span><span class="p">)</span>
+<span class="n">all_stocks</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">page</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">page_source</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next step is the same as the earlier process of extracting all the relevant text from the <code>&lt;tbody&gt;</code> of the table using <code>extract_text</code> function.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">page_html</span> <span class="o">=</span> <span class="n">HTML</span><span class="p">(</span><span class="n">html</span> <span class="o">=</span> <span class="n">page</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">all_stocks_table</span> <span class="o">=</span> <span class="n">page_html</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'#cross_rate_markets_stocks_1'</span><span class="p">,</span> <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">all_stock_rows</span> <span class="o">=</span> <span class="n">all_stocks_table</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'tbody tr'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">all_stock_rows</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&lt;Element 'tr' id='pair_101641'&gt;,
+ &lt;Element 'tr' id='pair_101643'&gt;,
+ &lt;Element 'tr' id='pair_101644'&gt;,
+ &lt;Element 'tr' id='pair_101645'&gt;,
+ &lt;Element 'tr' id='pair_101646'&gt;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">nse_all_stocks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">extract_text</span><span class="p">,</span> <span class="n">all_stock_rows</span><span class="p">))</span>
+
+<span class="n">nse_all_stocks</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">nse_all_stocks</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">column_names</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">nse_all_stocks</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'Name'</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">nse_all_stocks</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+  <div id="df-e1325f9c-3e3e-4d81-b93f-d64dd93e855c">
+    <div class="colab-df-container">
+      <div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Last</th>
+      <th>High</th>
+      <th>Low</th>
+      <th>Chg.</th>
+      <th>Chg. %</th>
+      <th>Vol.</th>
+      <th>Time</th>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Berger Paints</th>
+      <td>7.75</td>
+      <td>7.75</td>
+      <td>7.75</td>
+      <td>+0.00</td>
+      <td>+0.00%</td>
+      <td>0</td>
+      <td>1651234680</td>
+    </tr>
+    <tr>
+      <th>Avoncrown</th>
+      <td>1.180</td>
+      <td>1.180</td>
+      <td>1.180</td>
+      <td>0.000</td>
+      <td>0.00%</td>
+      <td>0</td>
+      <td>1580802308</td>
+    </tr>
+    <tr>
+      <th>Betaglas</th>
+      <td>61.70</td>
+      <td>61.70</td>
+      <td>61.70</td>
+      <td>+0.00</td>
+      <td>+0.00%</td>
+      <td>0</td>
+      <td>1651239000</td>
+    </tr>
+    <tr>
+      <th>Aiico</th>
+      <td>0.79</td>
+      <td>0.79</td>
+      <td>0.75</td>
+      <td>+0.00</td>
+      <td>+0.00%</td>
+      <td>0</td>
+      <td>1651239000</td>
+    </tr>
+    <tr>
+      <th>Asosavings</th>
+      <td>0.50</td>
+      <td>0.50</td>
+      <td>0.50</td>
+      <td>0.00</td>
+      <td>0.00%</td>
+      <td>0</td>
+      <td>1580802308</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-e1325f9c-3e3e-4d81-b93f-d64dd93e855c')" title="Convert this dataframe to an interactive table." style="display:none;">
+        
+  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px"&gt;
+    <path d="M0 0h24v24H0V0z" fill="none"></path>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"></path><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"></path>
+  &lt;/svg&gt;
+      </button>
+      
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-e1325f9c-3e3e-4d81-b93f-d64dd93e855c button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-e1325f9c-3e3e-4d81-b93f-d64dd93e855c');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+  
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">nse_all_stocks</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span> <span class="o">=</span> <span class="n">nse_all_stocks</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+<span class="n">nse_all_stocks</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span> <span class="o">=</span> <span class="n">nse_all_stocks</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">nse_all_stocks</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+  <div id="df-d2bd1814-2187-4ad2-ab25-21f523750cc0">
+    <div class="colab-df-container">
+      <div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Last</th>
+      <th>High</th>
+      <th>Low</th>
+      <th>Chg.</th>
+      <th>Chg. %</th>
+      <th>Vol.</th>
+      <th>Time</th>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Berger Paints</th>
+      <td>7.75</td>
+      <td>7.75</td>
+      <td>7.75</td>
+      <td>+0.00</td>
+      <td>+0.00%</td>
+      <td>0</td>
+      <td>2022-04-29</td>
+    </tr>
+    <tr>
+      <th>Avoncrown</th>
+      <td>1.180</td>
+      <td>1.180</td>
+      <td>1.180</td>
+      <td>0.000</td>
+      <td>0.00%</td>
+      <td>0</td>
+      <td>2020-02-04</td>
+    </tr>
+    <tr>
+      <th>Betaglas</th>
+      <td>61.70</td>
+      <td>61.70</td>
+      <td>61.70</td>
+      <td>+0.00</td>
+      <td>+0.00%</td>
+      <td>0</td>
+      <td>2022-04-29</td>
+    </tr>
+    <tr>
+      <th>Aiico</th>
+      <td>0.79</td>
+      <td>0.79</td>
+      <td>0.75</td>
+      <td>+0.00</td>
+      <td>+0.00%</td>
+      <td>0</td>
+      <td>2022-04-29</td>
+    </tr>
+    <tr>
+      <th>Asosavings</th>
+      <td>0.50</td>
+      <td>0.50</td>
+      <td>0.50</td>
+      <td>0.00</td>
+      <td>0.00%</td>
+      <td>0</td>
+      <td>2020-02-04</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-d2bd1814-2187-4ad2-ab25-21f523750cc0')" title="Convert this dataframe to an interactive table." style="display:none;">
+        
+  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px"&gt;
+    <path d="M0 0h24v24H0V0z" fill="none"></path>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"></path><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"></path>
+  &lt;/svg&gt;
+      </button>
+      
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-d2bd1814-2187-4ad2-ab25-21f523750cc0 button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-d2bd1814-2187-4ad2-ab25-21f523750cc0');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+  
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">nse_all_stocks</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(161, 7)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="GETTING-DATA-FROM-XHR-OBJECT">
+<a class="anchor" href="#GETTING-DATA-FROM-XHR-OBJECT" aria-hidden="true"><span class="octicon octicon-link"></span></a>GETTING DATA FROM XHR OBJECT<a class="anchor-link" href="#GETTING-DATA-FROM-XHR-OBJECT"> </a>
+</h1>
+<p>So far we've successfully scraped data from a web page table. But sometimes the data we require are not easily accessible within the HTML elements. The daily equity price of all listed companies are displayed in a tabular format but the historical price of each stock is displayed as an area graph.
+<br>
+<br>
+<img src="https://drive.google.com/uc?export=view&amp;id=1gZ2QSO4t5W36jZ139tg4JLAmrbc7S5m2" alt="">
+<br>
+<br></p>
+<p>On the left side of the image above is an area chart of MTN Nigeria historical share price. Beside it, at the Network tab, are requests made by the website. The chart in particular is rendered by the data fetched from XMLHttpRequest (XHR) object <code>--highlighted</code>. XHR are API within the Javascript browser environment whose methods are used to fetch data from the server. They are common in website implementing Ajax design.
+<br>
+<br>
+To have access to the data behind the chart, we need to intercept the request made by the browser. Selenium wire give you access to the underlying requests made by the browser.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="k">def</span> <span class="nf">extract_link</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+  <span class="n">domain</span> <span class="o">=</span> <span class="s1">'https://ng.investing.com'</span>
+  <span class="n">path</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'td'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="n">domain</span> <span class="o">+</span> <span class="n">path</span> <span class="o">+</span> <span class="s1">'-chart'</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'td'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span>
+  <span class="k">return</span> <span class="p">[</span><span class="n">name</span><span class="p">,</span> <span class="n">url</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The function above construct the link to the chart for each company in a row. The key components required are domain and the path which is gotten from the href attribute of the anchor tag. To arrive at the full path these two components are concatenated with <code>-chart</code> which is a suffix common to the chart page. 
+<br>
+This function is then used to extract all the names and chart link of all companies on the table.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">chart_links</span> <span class="o">=</span> <span class="p">[</span><span class="n">extract_link</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">all_stock_rows</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">chart_link_df</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">chart_links</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Name'</span><span class="p">,</span> <span class="s1">'Link'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">chart_link_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+  <div id="df-05cbb990-47aa-45d3-9bff-33c119a7adce">
+    <div class="colab-df-container">
+      <div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Name</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Berger Paints</td>
+      <td>https://ng.investing.com/equities/berger-paint...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Avoncrown</td>
+      <td>https://ng.investing.com/equities/avoncrown-chart</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Betaglas</td>
+      <td>https://ng.investing.com/equities/betaglas-chart</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Aiico</td>
+      <td>https://ng.investing.com/equities/aiico-chart</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Asosavings</td>
+      <td>https://ng.investing.com/equities/asosavings-c...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-05cbb990-47aa-45d3-9bff-33c119a7adce')" title="Convert this dataframe to an interactive table." style="display:none;">
+        
+  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px"&gt;
+    <path d="M0 0h24v24H0V0z" fill="none"></path>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"></path><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"></path>
+  &lt;/svg&gt;
+      </button>
+      
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-05cbb990-47aa-45d3-9bff-33c119a7adce button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-05cbb990-47aa-45d3-9bff-33c119a7adce');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+  
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's demonstrate how to intercept a browser request using one of the links in the table above. Basically, the link is passed to the driver which loads the web page. By calling the <code>driver.request</code> attribute, all request made by the browser can be saved as a variable. Subsequently, the request (XHR object) of interest is filtered by specifying a unique substring of its url <code>'/history?symbol='</code> in our own case.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="s1">'chromedriver'</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">options</span><span class="p">,</span> <span class="n">desired_capabilities</span> <span class="o">=</span> <span class="n">capabilities</span><span class="p">)</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">chart_link_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">reqs</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">requests</span>
+<span class="c1"># xhr = driver.wait_for_request(r'/history?symbol=', 60)</span>
+
+<span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">req</span> <span class="o">=</span> <span class="p">[</span><span class="n">req</span> <span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">reqs</span> <span class="k">if</span> <span class="s1">'/history?symbol='</span> <span class="ow">in</span> <span class="n">req</span><span class="o">.</span><span class="n">url</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">header</span> <span class="o">=</span> <span class="n">req</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">headers</span>
+<span class="n">url</span> <span class="o">=</span> <span class="n">req</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">url</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Output" data-close="Show Output"></summary>
+        <p>
+</p>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>sec-ch-ua: 
+accept: */*
+content-type: text/plain
+sec-ch-ua-mobile: ?0
+user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/100.0.4896.127 Safari/537.36
+sec-ch-ua-platform: 
+origin: https://tvc-invdn-com.investing.com
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: https://tvc-invdn-com.investing.com/
+accept-encoding: gzip, deflate, br
+accept-language: en-US
+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">header</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">ticker</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+<span class="n">ticker</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+  <div id="df-0fefe388-d0cf-44a7-a4ea-4879d46da001">
+    <div class="colab-df-container">
+      <div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>t</th>
+      <th>c</th>
+      <th>o</th>
+      <th>h</th>
+      <th>l</th>
+      <th>v</th>
+      <th>vo</th>
+      <th>s</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1620604800</td>
+      <td>6.1</td>
+      <td>6.1</td>
+      <td>6.7</td>
+      <td>6.7</td>
+      <td>2448</td>
+      <td>0</td>
+      <td>ok</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1620691200</td>
+      <td>6.1</td>
+      <td>6.1</td>
+      <td>6.7</td>
+      <td>6.7</td>
+      <td>3232</td>
+      <td>0</td>
+      <td>ok</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1620950400</td>
+      <td>6.1</td>
+      <td>6.1</td>
+      <td>6.7</td>
+      <td>6.7</td>
+      <td>1428</td>
+      <td>0</td>
+      <td>ok</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1621209600</td>
+      <td>6.1</td>
+      <td>6.1</td>
+      <td>6.7</td>
+      <td>6.7</td>
+      <td>1292</td>
+      <td>0</td>
+      <td>ok</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1621296000</td>
+      <td>6.1</td>
+      <td>6.1</td>
+      <td>6.7</td>
+      <td>6.7</td>
+      <td>3853</td>
+      <td>0</td>
+      <td>ok</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-0fefe388-d0cf-44a7-a4ea-4879d46da001')" title="Convert this dataframe to an interactive table." style="display:none;">
+        
+  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px"&gt;
+    <path d="M0 0h24v24H0V0z" fill="none"></path>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"></path><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"></path>
+  &lt;/svg&gt;
+      </button>
+      
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-0fefe388-d0cf-44a7-a4ea-4879d46da001 button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-0fefe388-d0cf-44a7-a4ea-4879d46da001');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+  
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="c1">#we are only interested in the date and closing price of the stock</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">'display.max_rows'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="n">ticker</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">'t'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">]]</span>
+
+<span class="n">ticker</span><span class="p">[</span><span class="s1">'t'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ticker</span><span class="p">[</span><span class="s1">'t'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()))</span>
+
+<span class="n">ticker</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Date'</span><span class="p">,</span> <span class="s1">'Closing Price'</span><span class="p">]</span>
+
+<span class="n">ticker</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'Date'</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">ticker</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Output" data-close="Show Output"></summary>
+        <p>
+</p>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+  <div id="df-c9f0fdb0-b051-42bc-88ae-f8cd0ba7eb00">
+    <div class="colab-df-container">
+      <div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Closing Price</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2021-05-10</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-11</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-14</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-17</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-18</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-19</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-20</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-21</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-24</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-26</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-27</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-28</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-05-31</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-06-01</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-06-02</th>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <th>2021-06-03</th>
+      <td>6.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-04</th>
+      <td>6.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-07</th>
+      <td>6.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-08</th>
+      <td>6.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-09</th>
+      <td>6.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-10</th>
+      <td>6.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-11</th>
+      <td>6.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-15</th>
+      <td>7.15</td>
+    </tr>
+    <tr>
+      <th>2021-06-16</th>
+      <td>7.15</td>
+    </tr>
+    <tr>
+      <th>2021-06-17</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-18</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-21</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-22</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-23</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-24</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-25</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-28</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-29</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2021-06-30</th>
+      <td>8.40</td>
+    </tr>
+    <tr>
+      <th>2021-07-01</th>
+      <td>8.40</td>
+    </tr>
+    <tr>
+      <th>2021-07-02</th>
+      <td>9.20</td>
+    </tr>
+    <tr>
+      <th>2021-07-05</th>
+      <td>9.20</td>
+    </tr>
+    <tr>
+      <th>2021-07-06</th>
+      <td>9.85</td>
+    </tr>
+    <tr>
+      <th>2021-07-07</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-08</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-09</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-12</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-13</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-14</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-15</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-16</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-19</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-22</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-23</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-26</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-27</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-28</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-29</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-07-30</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-02</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-03</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-04</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-05</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-06</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-09</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-10</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-11</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-12</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-13</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-16</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-17</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-18</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-19</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-20</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-23</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-24</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-25</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-26</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-27</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-30</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-08-31</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-01</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-02</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-03</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-06</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-07</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-08</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-09</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-10</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-13</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-14</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-15</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-16</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-17</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-20</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-21</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-22</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-23</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-24</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-27</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-28</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-29</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-09-30</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-04</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-05</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-06</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-07</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-08</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-11</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-12</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-13</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-14</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-15</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-18</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-20</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-21</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-22</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-25</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-26</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-27</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-28</th>
+      <td>8.90</td>
+    </tr>
+    <tr>
+      <th>2021-10-29</th>
+      <td>9.35</td>
+    </tr>
+    <tr>
+      <th>2021-11-01</th>
+      <td>9.35</td>
+    </tr>
+    <tr>
+      <th>2021-11-02</th>
+      <td>9.35</td>
+    </tr>
+    <tr>
+      <th>2021-11-03</th>
+      <td>9.35</td>
+    </tr>
+    <tr>
+      <th>2021-11-04</th>
+      <td>9.35</td>
+    </tr>
+    <tr>
+      <th>2021-11-05</th>
+      <td>9.45</td>
+    </tr>
+    <tr>
+      <th>2021-11-08</th>
+      <td>9.45</td>
+    </tr>
+    <tr>
+      <th>2021-11-09</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-10</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-11</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-12</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-15</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-16</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-17</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-18</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-19</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-22</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-23</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-24</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-25</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-26</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-29</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-11-30</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-01</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-02</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-03</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-06</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-07</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-08</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-09</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-10</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-13</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-14</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-15</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-16</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-17</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-20</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-21</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-23</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-24</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-29</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-30</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2021-12-31</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2022-01-04</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2022-01-05</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2022-01-06</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2022-01-07</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2022-01-10</th>
+      <td>8.55</td>
+    </tr>
+    <tr>
+      <th>2022-01-11</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2022-01-12</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2022-01-13</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2022-01-14</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2022-01-17</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2022-01-18</th>
+      <td>8.15</td>
+    </tr>
+    <tr>
+      <th>2022-01-19</th>
+      <td>8.20</td>
+    </tr>
+    <tr>
+      <th>2022-01-20</th>
+      <td>8.20</td>
+    </tr>
+    <tr>
+      <th>2022-01-21</th>
+      <td>8.20</td>
+    </tr>
+    <tr>
+      <th>2022-01-24</th>
+      <td>8.20</td>
+    </tr>
+    <tr>
+      <th>2022-01-25</th>
+      <td>8.20</td>
+    </tr>
+    <tr>
+      <th>2022-01-26</th>
+      <td>8.20</td>
+    </tr>
+    <tr>
+      <th>2022-01-27</th>
+      <td>8.20</td>
+    </tr>
+    <tr>
+      <th>2022-01-28</th>
+      <td>8.20</td>
+    </tr>
+    <tr>
+      <th>2022-01-31</th>
+      <td>8.20</td>
+    </tr>
+    <tr>
+      <th>2022-02-01</th>
+      <td>8.20</td>
+    </tr>
+    <tr>
+      <th>2022-02-02</th>
+      <td>8.35</td>
+    </tr>
+    <tr>
+      <th>2022-02-03</th>
+      <td>8.35</td>
+    </tr>
+    <tr>
+      <th>2022-02-04</th>
+      <td>8.35</td>
+    </tr>
+    <tr>
+      <th>2022-02-07</th>
+      <td>8.35</td>
+    </tr>
+    <tr>
+      <th>2022-02-08</th>
+      <td>8.35</td>
+    </tr>
+    <tr>
+      <th>2022-02-09</th>
+      <td>8.35</td>
+    </tr>
+    <tr>
+      <th>2022-02-10</th>
+      <td>8.35</td>
+    </tr>
+    <tr>
+      <th>2022-02-11</th>
+      <td>8.35</td>
+    </tr>
+    <tr>
+      <th>2022-02-14</th>
+      <td>8.35</td>
+    </tr>
+    <tr>
+      <th>2022-02-15</th>
+      <td>7.55</td>
+    </tr>
+    <tr>
+      <th>2022-02-16</th>
+      <td>7.55</td>
+    </tr>
+    <tr>
+      <th>2022-02-17</th>
+      <td>7.55</td>
+    </tr>
+    <tr>
+      <th>2022-02-18</th>
+      <td>7.55</td>
+    </tr>
+    <tr>
+      <th>2022-02-21</th>
+      <td>7.55</td>
+    </tr>
+    <tr>
+      <th>2022-02-22</th>
+      <td>8.25</td>
+    </tr>
+    <tr>
+      <th>2022-02-23</th>
+      <td>8.25</td>
+    </tr>
+    <tr>
+      <th>2022-02-24</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-02-25</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-02-28</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-01</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-02</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-03</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-04</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-07</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-08</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-09</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-10</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-11</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-14</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-15</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-16</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-17</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-18</th>
+      <td>8.30</td>
+    </tr>
+    <tr>
+      <th>2022-03-21</th>
+      <td>7.50</td>
+    </tr>
+    <tr>
+      <th>2022-03-22</th>
+      <td>7.50</td>
+    </tr>
+    <tr>
+      <th>2022-03-23</th>
+      <td>7.50</td>
+    </tr>
+    <tr>
+      <th>2022-03-24</th>
+      <td>7.50</td>
+    </tr>
+    <tr>
+      <th>2022-03-25</th>
+      <td>7.50</td>
+    </tr>
+    <tr>
+      <th>2022-03-28</th>
+      <td>7.50</td>
+    </tr>
+    <tr>
+      <th>2022-03-29</th>
+      <td>7.50</td>
+    </tr>
+    <tr>
+      <th>2022-03-30</th>
+      <td>7.50</td>
+    </tr>
+    <tr>
+      <th>2022-03-31</th>
+      <td>6.80</td>
+    </tr>
+    <tr>
+      <th>2022-04-01</th>
+      <td>6.15</td>
+    </tr>
+    <tr>
+      <th>2022-04-04</th>
+      <td>6.20</td>
+    </tr>
+    <tr>
+      <th>2022-04-05</th>
+      <td>6.20</td>
+    </tr>
+    <tr>
+      <th>2022-04-06</th>
+      <td>6.20</td>
+    </tr>
+    <tr>
+      <th>2022-04-07</th>
+      <td>6.20</td>
+    </tr>
+    <tr>
+      <th>2022-04-08</th>
+      <td>6.20</td>
+    </tr>
+    <tr>
+      <th>2022-04-11</th>
+      <td>6.20</td>
+    </tr>
+    <tr>
+      <th>2022-04-12</th>
+      <td>6.80</td>
+    </tr>
+    <tr>
+      <th>2022-04-13</th>
+      <td>7.00</td>
+    </tr>
+    <tr>
+      <th>2022-04-14</th>
+      <td>7.25</td>
+    </tr>
+    <tr>
+      <th>2022-04-19</th>
+      <td>7.00</td>
+    </tr>
+    <tr>
+      <th>2022-04-20</th>
+      <td>7.00</td>
+    </tr>
+    <tr>
+      <th>2022-04-21</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2022-04-22</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2022-04-25</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2022-04-26</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2022-04-27</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2022-04-28</th>
+      <td>7.70</td>
+    </tr>
+    <tr>
+      <th>2022-04-29</th>
+      <td>7.70</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-c9f0fdb0-b051-42bc-88ae-f8cd0ba7eb00')" title="Convert this dataframe to an interactive table." style="display:none;">
+        
+  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px"&gt;
+    <path d="M0 0h24v24H0V0z" fill="none"></path>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"></path><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"></path>
+  &lt;/svg&gt;
+      </button>
+      
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-c9f0fdb0-b051-42bc-88ae-f8cd0ba7eb00 button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-c9f0fdb0-b051-42bc-88ae-f8cd0ba7eb00');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+  
+</div>
+
+</div>
+
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="k">def</span> <span class="nf">get_historical_price</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">link</span><span class="p">):</span>
+  <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="s1">'chromedriver'</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">options</span><span class="p">,</span> <span class="n">desired_capabilities</span> <span class="o">=</span> <span class="n">capabilities</span><span class="p">)</span>
+  <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+  <span class="n">reqs</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">requests</span>
+  <span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+  <span class="n">req</span> <span class="o">=</span> <span class="p">[</span><span class="n">req</span> <span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">reqs</span> <span class="k">if</span> <span class="s1">'/history?symbol='</span> <span class="ow">in</span> <span class="n">req</span><span class="o">.</span><span class="n">url</span><span class="p">]</span>
+  <span class="n">header</span> <span class="o">=</span> <span class="n">req</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">headers</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="n">req</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">url</span>
+  <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">header</span><span class="p">)</span>
+  <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+  <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">'t'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">]]</span>
+  <span class="n">df</span><span class="p">[</span><span class="s1">'t'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'t'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()))</span>
+  <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Date'</span><span class="p">,</span> <span class="n">name</span><span class="p">]</span>
+  <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'Date'</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">the_five</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">chart_link_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="n">chart_link_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">get_historical_price</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">link</span><span class="p">)</span>
+    <span class="n">the_five</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">the_five</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">'outer'</span><span class="p">,</span> <span class="n">left_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> 
+  <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+    <span class="k">continue</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">the_five</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+  <div id="df-53fef94c-b16d-4c38-acde-ff49d8cae3e1">
+    <div class="colab-df-container">
+      <div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Berger Paints</th>
+      <th>Betaglas</th>
+      <th>Aiico</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2021-05-10</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.548571</td>
+    </tr>
+    <tr>
+      <th>2021-05-11</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.552857</td>
+    </tr>
+    <tr>
+      <th>2021-05-14</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.552857</td>
+    </tr>
+    <tr>
+      <th>2021-05-17</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.552857</td>
+    </tr>
+    <tr>
+      <th>2021-05-18</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.552857</td>
+    </tr>
+    <tr>
+      <th>2021-05-19</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.535714</td>
+    </tr>
+    <tr>
+      <th>2021-05-20</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.552857</td>
+    </tr>
+    <tr>
+      <th>2021-05-21</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.544285</td>
+    </tr>
+    <tr>
+      <th>2021-05-24</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.518571</td>
+    </tr>
+    <tr>
+      <th>2021-05-25</th>
+      <td>NaN</td>
+      <td>54.000000</td>
+      <td>0.492857</td>
+    </tr>
+    <tr>
+      <th>2021-05-26</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.492857</td>
+    </tr>
+    <tr>
+      <th>2021-05-27</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.492857</td>
+    </tr>
+    <tr>
+      <th>2021-05-28</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.497142</td>
+    </tr>
+    <tr>
+      <th>2021-05-31</th>
+      <td>6.10</td>
+      <td>NaN</td>
+      <td>0.514285</td>
+    </tr>
+    <tr>
+      <th>2021-06-01</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.509999</td>
+    </tr>
+    <tr>
+      <th>2021-06-02</th>
+      <td>6.10</td>
+      <td>54.000000</td>
+      <td>0.509999</td>
+    </tr>
+    <tr>
+      <th>2021-06-03</th>
+      <td>6.70</td>
+      <td>54.000000</td>
+      <td>0.509999</td>
+    </tr>
+    <tr>
+      <th>2021-06-04</th>
+      <td>6.70</td>
+      <td>54.000000</td>
+      <td>0.492857</td>
+    </tr>
+    <tr>
+      <th>2021-06-07</th>
+      <td>6.70</td>
+      <td>54.000000</td>
+      <td>0.480000</td>
+    </tr>
+    <tr>
+      <th>2021-06-08</th>
+      <td>6.70</td>
+      <td>54.000000</td>
+      <td>0.480000</td>
+    </tr>
+    <tr>
+      <th>2021-06-09</th>
+      <td>6.70</td>
+      <td>54.000000</td>
+      <td>0.480000</td>
+    </tr>
+    <tr>
+      <th>2021-06-10</th>
+      <td>6.70</td>
+      <td>54.000000</td>
+      <td>0.480000</td>
+    </tr>
+    <tr>
+      <th>2021-06-11</th>
+      <td>6.70</td>
+      <td>52.950001</td>
+      <td>0.475714</td>
+    </tr>
+    <tr>
+      <th>2021-06-15</th>
+      <td>7.15</td>
+      <td>52.950001</td>
+      <td>0.471428</td>
+    </tr>
+    <tr>
+      <th>2021-06-16</th>
+      <td>7.15</td>
+      <td>52.950001</td>
+      <td>0.467142</td>
+    </tr>
+    <tr>
+      <th>2021-06-17</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.480000</td>
+    </tr>
+    <tr>
+      <th>2021-06-18</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.467142</td>
+    </tr>
+    <tr>
+      <th>2021-06-21</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.467142</td>
+    </tr>
+    <tr>
+      <th>2021-06-22</th>
+      <td>7.70</td>
+      <td>NaN</td>
+      <td>0.471428</td>
+    </tr>
+    <tr>
+      <th>2021-06-23</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.462857</td>
+    </tr>
+    <tr>
+      <th>2021-06-24</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.428571</td>
+    </tr>
+    <tr>
+      <th>2021-06-25</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-06-28</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.445714</td>
+    </tr>
+    <tr>
+      <th>2021-06-29</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-06-30</th>
+      <td>8.40</td>
+      <td>52.950001</td>
+      <td>0.445714</td>
+    </tr>
+    <tr>
+      <th>2021-07-01</th>
+      <td>8.40</td>
+      <td>NaN</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-07-02</th>
+      <td>9.20</td>
+      <td>NaN</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-07-05</th>
+      <td>9.20</td>
+      <td>52.950001</td>
+      <td>0.445714</td>
+    </tr>
+    <tr>
+      <th>2021-07-06</th>
+      <td>9.85</td>
+      <td>52.950001</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-07-07</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-07-08</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-07-09</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-07-12</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-07-13</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-07-14</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-07-15</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.492857</td>
+    </tr>
+    <tr>
+      <th>2021-07-16</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.492857</td>
+    </tr>
+    <tr>
+      <th>2021-07-19</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.492857</td>
+    </tr>
+    <tr>
+      <th>2021-07-22</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.450000</td>
+    </tr>
+    <tr>
+      <th>2021-07-23</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.454285</td>
+    </tr>
+    <tr>
+      <th>2021-07-26</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.462857</td>
+    </tr>
+    <tr>
+      <th>2021-07-27</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.462857</td>
+    </tr>
+    <tr>
+      <th>2021-07-28</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.458571</td>
+    </tr>
+    <tr>
+      <th>2021-07-29</th>
+      <td>8.90</td>
+      <td>NaN</td>
+      <td>0.475714</td>
+    </tr>
+    <tr>
+      <th>2021-07-30</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.462857</td>
+    </tr>
+    <tr>
+      <th>2021-08-02</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.445714</td>
+    </tr>
+    <tr>
+      <th>2021-08-03</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.428571</td>
+    </tr>
+    <tr>
+      <th>2021-08-04</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.415714</td>
+    </tr>
+    <tr>
+      <th>2021-08-05</th>
+      <td>8.90</td>
+      <td>NaN</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-08-06</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-08-09</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.420000</td>
+    </tr>
+    <tr>
+      <th>2021-08-10</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.420000</td>
+    </tr>
+    <tr>
+      <th>2021-08-11</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-08-12</th>
+      <td>8.90</td>
+      <td>NaN</td>
+      <td>0.415714</td>
+    </tr>
+    <tr>
+      <th>2021-08-13</th>
+      <td>8.90</td>
+      <td>NaN</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-08-16</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-08-17</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.411428</td>
+    </tr>
+    <tr>
+      <th>2021-08-18</th>
+      <td>8.90</td>
+      <td>NaN</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-08-19</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.420000</td>
+    </tr>
+    <tr>
+      <th>2021-08-20</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.420000</td>
+    </tr>
+    <tr>
+      <th>2021-08-23</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.420000</td>
+    </tr>
+    <tr>
+      <th>2021-08-24</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-08-25</th>
+      <td>8.90</td>
+      <td>NaN</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-08-26</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.441428</td>
+    </tr>
+    <tr>
+      <th>2021-08-27</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.420000</td>
+    </tr>
+    <tr>
+      <th>2021-08-30</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.441428</td>
+    </tr>
+    <tr>
+      <th>2021-08-31</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.424285</td>
+    </tr>
+    <tr>
+      <th>2021-09-01</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.441428</td>
+    </tr>
+    <tr>
+      <th>2021-09-02</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.441428</td>
+    </tr>
+    <tr>
+      <th>2021-09-03</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.441428</td>
+    </tr>
+    <tr>
+      <th>2021-09-06</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.437142</td>
+    </tr>
+    <tr>
+      <th>2021-09-07</th>
+      <td>8.90</td>
+      <td>NaN</td>
+      <td>0.437142</td>
+    </tr>
+    <tr>
+      <th>2021-09-08</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.437142</td>
+    </tr>
+    <tr>
+      <th>2021-09-09</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-09-10</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.424285</td>
+    </tr>
+    <tr>
+      <th>2021-09-13</th>
+      <td>8.90</td>
+      <td>NaN</td>
+      <td>0.424285</td>
+    </tr>
+    <tr>
+      <th>2021-09-14</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.420000</td>
+    </tr>
+    <tr>
+      <th>2021-09-15</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.411428</td>
+    </tr>
+    <tr>
+      <th>2021-09-16</th>
+      <td>8.90</td>
+      <td>NaN</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-09-17</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-09-20</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.415714</td>
+    </tr>
+    <tr>
+      <th>2021-09-21</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.415714</td>
+    </tr>
+    <tr>
+      <th>2021-09-22</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.420000</td>
+    </tr>
+    <tr>
+      <th>2021-09-23</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.411428</td>
+    </tr>
+    <tr>
+      <th>2021-09-24</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.411428</td>
+    </tr>
+    <tr>
+      <th>2021-09-27</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.411428</td>
+    </tr>
+    <tr>
+      <th>2021-09-28</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-09-29</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-09-30</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-10-04</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.402857</td>
+    </tr>
+    <tr>
+      <th>2021-10-05</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-10-06</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.402857</td>
+    </tr>
+    <tr>
+      <th>2021-10-07</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.394285</td>
+    </tr>
+    <tr>
+      <th>2021-10-08</th>
+      <td>8.90</td>
+      <td>NaN</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-10-11</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.385714</td>
+    </tr>
+    <tr>
+      <th>2021-10-12</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.394285</td>
+    </tr>
+    <tr>
+      <th>2021-10-13</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.398571</td>
+    </tr>
+    <tr>
+      <th>2021-10-14</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-10-15</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-10-18</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.385714</td>
+    </tr>
+    <tr>
+      <th>2021-10-20</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.394285</td>
+    </tr>
+    <tr>
+      <th>2021-10-21</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.398571</td>
+    </tr>
+    <tr>
+      <th>2021-10-22</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.402857</td>
+    </tr>
+    <tr>
+      <th>2021-10-25</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.407142</td>
+    </tr>
+    <tr>
+      <th>2021-10-26</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.402857</td>
+    </tr>
+    <tr>
+      <th>2021-10-27</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.441428</td>
+    </tr>
+    <tr>
+      <th>2021-10-28</th>
+      <td>8.90</td>
+      <td>52.950001</td>
+      <td>0.484285</td>
+    </tr>
+    <tr>
+      <th>2021-10-29</th>
+      <td>9.35</td>
+      <td>52.950001</td>
+      <td>0.531428</td>
+    </tr>
+    <tr>
+      <th>2021-11-01</th>
+      <td>9.35</td>
+      <td>52.950001</td>
+      <td>0.578571</td>
+    </tr>
+    <tr>
+      <th>2021-11-02</th>
+      <td>9.35</td>
+      <td>52.950001</td>
+      <td>0.548571</td>
+    </tr>
+    <tr>
+      <th>2021-11-03</th>
+      <td>9.35</td>
+      <td>52.950001</td>
+      <td>0.522857</td>
+    </tr>
+    <tr>
+      <th>2021-11-04</th>
+      <td>9.35</td>
+      <td>52.950001</td>
+      <td>0.548571</td>
+    </tr>
+    <tr>
+      <th>2021-11-05</th>
+      <td>9.45</td>
+      <td>52.950001</td>
+      <td>0.557142</td>
+    </tr>
+    <tr>
+      <th>2021-11-08</th>
+      <td>9.45</td>
+      <td>52.950001</td>
+      <td>0.548571</td>
+    </tr>
+    <tr>
+      <th>2021-11-09</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.557142</td>
+    </tr>
+    <tr>
+      <th>2021-11-10</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.552857</td>
+    </tr>
+    <tr>
+      <th>2021-11-11</th>
+      <td>8.55</td>
+      <td>NaN</td>
+      <td>0.548571</td>
+    </tr>
+    <tr>
+      <th>2021-11-12</th>
+      <td>8.55</td>
+      <td>NaN</td>
+      <td>0.544285</td>
+    </tr>
+    <tr>
+      <th>2021-11-15</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.535714</td>
+    </tr>
+    <tr>
+      <th>2021-11-16</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.557142</td>
+    </tr>
+    <tr>
+      <th>2021-11-17</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.557142</td>
+    </tr>
+    <tr>
+      <th>2021-11-18</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.557142</td>
+    </tr>
+    <tr>
+      <th>2021-11-19</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.539999</td>
+    </tr>
+    <tr>
+      <th>2021-11-22</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.535714</td>
+    </tr>
+    <tr>
+      <th>2021-11-23</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.535714</td>
+    </tr>
+    <tr>
+      <th>2021-11-24</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.590000</td>
+    </tr>
+    <tr>
+      <th>2021-11-25</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.640000</td>
+    </tr>
+    <tr>
+      <th>2021-11-26</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2021-11-29</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.760000</td>
+    </tr>
+    <tr>
+      <th>2021-11-30</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.830000</td>
+    </tr>
+    <tr>
+      <th>2021-12-01</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.820000</td>
+    </tr>
+    <tr>
+      <th>2021-12-02</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.760000</td>
+    </tr>
+    <tr>
+      <th>2021-12-03</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.740000</td>
+    </tr>
+    <tr>
+      <th>2021-12-06</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2021-12-07</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2021-12-08</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2021-12-09</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2021-12-10</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.680000</td>
+    </tr>
+    <tr>
+      <th>2021-12-13</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2021-12-14</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2021-12-15</th>
+      <td>8.55</td>
+      <td>NaN</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2021-12-16</th>
+      <td>8.55</td>
+      <td>NaN</td>
+      <td>0.680000</td>
+    </tr>
+    <tr>
+      <th>2021-12-17</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.680000</td>
+    </tr>
+    <tr>
+      <th>2021-12-20</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.680000</td>
+    </tr>
+    <tr>
+      <th>2021-12-21</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2021-12-22</th>
+      <td>NaN</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2021-12-23</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2021-12-24</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.710000</td>
+    </tr>
+    <tr>
+      <th>2021-12-29</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2021-12-30</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2021-12-31</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-01-04</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.720000</td>
+    </tr>
+    <tr>
+      <th>2022-01-05</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.780000</td>
+    </tr>
+    <tr>
+      <th>2022-01-06</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.780000</td>
+    </tr>
+    <tr>
+      <th>2022-01-07</th>
+      <td>8.55</td>
+      <td>NaN</td>
+      <td>0.780000</td>
+    </tr>
+    <tr>
+      <th>2022-01-10</th>
+      <td>8.55</td>
+      <td>52.950001</td>
+      <td>0.840000</td>
+    </tr>
+    <tr>
+      <th>2022-01-11</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.810000</td>
+    </tr>
+    <tr>
+      <th>2022-01-12</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.780000</td>
+    </tr>
+    <tr>
+      <th>2022-01-13</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.800000</td>
+    </tr>
+    <tr>
+      <th>2022-01-14</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.790000</td>
+    </tr>
+    <tr>
+      <th>2022-01-17</th>
+      <td>7.70</td>
+      <td>52.950001</td>
+      <td>0.790000</td>
+    </tr>
+    <tr>
+      <th>2022-01-18</th>
+      <td>8.15</td>
+      <td>52.950001</td>
+      <td>0.800000</td>
+    </tr>
+    <tr>
+      <th>2022-01-19</th>
+      <td>8.20</td>
+      <td>52.950001</td>
+      <td>0.800000</td>
+    </tr>
+    <tr>
+      <th>2022-01-20</th>
+      <td>8.20</td>
+      <td>NaN</td>
+      <td>0.800000</td>
+    </tr>
+    <tr>
+      <th>2022-01-21</th>
+      <td>8.20</td>
+      <td>52.950001</td>
+      <td>0.820000</td>
+    </tr>
+    <tr>
+      <th>2022-01-24</th>
+      <td>8.20</td>
+      <td>52.950001</td>
+      <td>0.800000</td>
+    </tr>
+    <tr>
+      <th>2022-01-25</th>
+      <td>8.20</td>
+      <td>52.950001</td>
+      <td>0.800000</td>
+    </tr>
+    <tr>
+      <th>2022-01-26</th>
+      <td>8.20</td>
+      <td>52.950001</td>
+      <td>0.800000</td>
+    </tr>
+    <tr>
+      <th>2022-01-27</th>
+      <td>8.20</td>
+      <td>52.950001</td>
+      <td>0.760000</td>
+    </tr>
+    <tr>
+      <th>2022-01-28</th>
+      <td>8.20</td>
+      <td>52.950001</td>
+      <td>0.760000</td>
+    </tr>
+    <tr>
+      <th>2022-01-31</th>
+      <td>8.20</td>
+      <td>52.950001</td>
+      <td>0.750000</td>
+    </tr>
+    <tr>
+      <th>2022-02-01</th>
+      <td>8.20</td>
+      <td>52.950001</td>
+      <td>0.740000</td>
+    </tr>
+    <tr>
+      <th>2022-02-02</th>
+      <td>8.35</td>
+      <td>52.950001</td>
+      <td>0.710000</td>
+    </tr>
+    <tr>
+      <th>2022-02-03</th>
+      <td>8.35</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-02-04</th>
+      <td>8.35</td>
+      <td>52.950001</td>
+      <td>0.720000</td>
+    </tr>
+    <tr>
+      <th>2022-02-07</th>
+      <td>8.35</td>
+      <td>52.950001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-02-08</th>
+      <td>8.35</td>
+      <td>52.950001</td>
+      <td>0.730000</td>
+    </tr>
+    <tr>
+      <th>2022-02-09</th>
+      <td>8.35</td>
+      <td>52.950001</td>
+      <td>0.710000</td>
+    </tr>
+    <tr>
+      <th>2022-02-10</th>
+      <td>8.35</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-02-11</th>
+      <td>8.35</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-02-14</th>
+      <td>8.35</td>
+      <td>52.950001</td>
+      <td>0.680000</td>
+    </tr>
+    <tr>
+      <th>2022-02-15</th>
+      <td>7.55</td>
+      <td>NaN</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-02-16</th>
+      <td>7.55</td>
+      <td>52.950001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-02-17</th>
+      <td>7.55</td>
+      <td>52.950001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-02-18</th>
+      <td>7.55</td>
+      <td>52.950001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-02-21</th>
+      <td>7.55</td>
+      <td>52.950001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-02-22</th>
+      <td>8.25</td>
+      <td>52.950001</td>
+      <td>0.670000</td>
+    </tr>
+    <tr>
+      <th>2022-02-23</th>
+      <td>8.25</td>
+      <td>NaN</td>
+      <td>0.680000</td>
+    </tr>
+    <tr>
+      <th>2022-02-24</th>
+      <td>8.30</td>
+      <td>NaN</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-02-25</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-02-28</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-03-01</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-03-02</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.710000</td>
+    </tr>
+    <tr>
+      <th>2022-03-03</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-03-04</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-03-07</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.660000</td>
+    </tr>
+    <tr>
+      <th>2022-03-08</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.660000</td>
+    </tr>
+    <tr>
+      <th>2022-03-09</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-03-10</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-03-11</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-03-14</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.680000</td>
+    </tr>
+    <tr>
+      <th>2022-03-15</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.650000</td>
+    </tr>
+    <tr>
+      <th>2022-03-16</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-03-17</th>
+      <td>8.30</td>
+      <td>52.950001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-03-18</th>
+      <td>8.30</td>
+      <td>NaN</td>
+      <td>0.720000</td>
+    </tr>
+    <tr>
+      <th>2022-03-21</th>
+      <td>7.50</td>
+      <td>52.950001</td>
+      <td>0.680000</td>
+    </tr>
+    <tr>
+      <th>2022-03-22</th>
+      <td>7.50</td>
+      <td>52.950001</td>
+      <td>0.660000</td>
+    </tr>
+    <tr>
+      <th>2022-03-23</th>
+      <td>7.50</td>
+      <td>52.950001</td>
+      <td>0.660000</td>
+    </tr>
+    <tr>
+      <th>2022-03-24</th>
+      <td>7.50</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-03-25</th>
+      <td>7.50</td>
+      <td>52.950001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-03-28</th>
+      <td>7.50</td>
+      <td>58.200001</td>
+      <td>0.670000</td>
+    </tr>
+    <tr>
+      <th>2022-03-29</th>
+      <td>7.50</td>
+      <td>58.200001</td>
+      <td>0.660000</td>
+    </tr>
+    <tr>
+      <th>2022-03-30</th>
+      <td>7.50</td>
+      <td>58.200001</td>
+      <td>0.660000</td>
+    </tr>
+    <tr>
+      <th>2022-03-31</th>
+      <td>6.80</td>
+      <td>58.200001</td>
+      <td>0.670000</td>
+    </tr>
+    <tr>
+      <th>2022-04-01</th>
+      <td>6.15</td>
+      <td>58.200001</td>
+      <td>0.640000</td>
+    </tr>
+    <tr>
+      <th>2022-04-04</th>
+      <td>6.20</td>
+      <td>58.200001</td>
+      <td>0.660000</td>
+    </tr>
+    <tr>
+      <th>2022-04-05</th>
+      <td>6.20</td>
+      <td>58.200001</td>
+      <td>0.650000</td>
+    </tr>
+    <tr>
+      <th>2022-04-06</th>
+      <td>6.20</td>
+      <td>58.200001</td>
+      <td>0.650000</td>
+    </tr>
+    <tr>
+      <th>2022-04-07</th>
+      <td>6.20</td>
+      <td>58.200001</td>
+      <td>0.650000</td>
+    </tr>
+    <tr>
+      <th>2022-04-08</th>
+      <td>6.20</td>
+      <td>58.200001</td>
+      <td>0.670000</td>
+    </tr>
+    <tr>
+      <th>2022-04-11</th>
+      <td>6.20</td>
+      <td>58.200001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-04-12</th>
+      <td>6.80</td>
+      <td>58.200001</td>
+      <td>0.660000</td>
+    </tr>
+    <tr>
+      <th>2022-04-13</th>
+      <td>7.00</td>
+      <td>58.200001</td>
+      <td>0.670000</td>
+    </tr>
+    <tr>
+      <th>2022-04-14</th>
+      <td>7.25</td>
+      <td>58.200001</td>
+      <td>0.670000</td>
+    </tr>
+    <tr>
+      <th>2022-04-19</th>
+      <td>7.00</td>
+      <td>58.200001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-04-20</th>
+      <td>7.00</td>
+      <td>58.200001</td>
+      <td>0.690000</td>
+    </tr>
+    <tr>
+      <th>2022-04-21</th>
+      <td>7.70</td>
+      <td>58.200001</td>
+      <td>0.680000</td>
+    </tr>
+    <tr>
+      <th>2022-04-22</th>
+      <td>7.70</td>
+      <td>58.200001</td>
+      <td>0.680000</td>
+    </tr>
+    <tr>
+      <th>2022-04-25</th>
+      <td>7.70</td>
+      <td>58.200001</td>
+      <td>0.660000</td>
+    </tr>
+    <tr>
+      <th>2022-04-26</th>
+      <td>7.70</td>
+      <td>58.200001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-04-27</th>
+      <td>7.70</td>
+      <td>58.200001</td>
+      <td>0.700000</td>
+    </tr>
+    <tr>
+      <th>2022-04-28</th>
+      <td>7.70</td>
+      <td>58.200001</td>
+      <td>0.740000</td>
+    </tr>
+    <tr>
+      <th>2022-04-29</th>
+      <td>7.70</td>
+      <td>58.200001</td>
+      <td>0.790000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-53fef94c-b16d-4c38-acde-ff49d8cae3e1')" title="Convert this dataframe to an interactive table." style="display:none;">
+        
+  &lt;svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px"&gt;
+    <path d="M0 0h24v24H0V0z" fill="none"></path>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"></path><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"></path>
+  &lt;/svg&gt;
+      </button>
+      
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-53fef94c-b16d-4c38-acde-ff49d8cae3e1 button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-53fef94c-b16d-4c38-acde-ff49d8cae3e1');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+  
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="References">
+<a class="anchor" href="#References" aria-hidden="true"><span class="octicon octicon-link"></span></a>References<a class="anchor-link" href="#References"> </a>
+</h1>
+<ul>
+<li>
+<p><a href="https://youtu.be/j7VZsCCnptM">https://youtu.be/j7VZsCCnptM</a></p>
+</li>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/XMLHttpRequest#:~:text=XMLHttpRequest%20(XHR)%20is%20an%20API,by%20the%20browser's%20JavaScript%20environment">https://en.wikipedia.org/wiki/XMLHttpRequest#:~:text=XMLHttpRequest%20(XHR)%20is%20an%20API,by%20the%20browser's%20JavaScript%20environment</a>.</p>
+</li>
+<li>
+<p><a href="https://colab.research.google.com/github/restrepo/ComputationalMethods/blob/master/tools/selenium.ipynb">https://colab.research.google.com/github/restrepo/ComputationalMethods/blob/master/tools/selenium.ipynb</a></p>
+</li>
+<li>
+<p><a href="https://stackoverflow.com/questions/51046454/how-can-we-use-selenium-webdriver-in-colab-research-google-com">https://stackoverflow.com/questions/51046454/how-can-we-use-selenium-webdriver-in-colab-research-google-com</a></p>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="sarbol/My-Blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/My-Blog/jupyter/selenium/request-html/web%20scraping/2022/05/02/_04_30_Web_Crawling_Tutorial.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/My-Blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/My-Blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/My-Blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>An easy to use blogging platform with support for Jupyter Notebooks.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" target="_blank" title="fastai"><svg class="svg-icon grey"><use xlink:href="/My-Blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" target="_blank" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/My-Blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
